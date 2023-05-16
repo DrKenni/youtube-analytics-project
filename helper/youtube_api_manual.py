@@ -29,7 +29,7 @@ docs: https://developers.google.com/youtube/v3/docs/channels/list
 channel_id = 'UC1eFXmJNkjITxPFWTy6RsWg'  # Редакция
 channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
 printj(channel)
-
+My Project 34679
 
 '''
 получить данные по play-листам канала
