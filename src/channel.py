@@ -3,25 +3,54 @@ from googleapiclient.discovery import build
 import os
 import json
 
-# YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-api_key: str = os.getenv('YT_API_KEY')
-
-# создать специальный объект для работы с API
-youtube = build('youtube', 'v3', developerKey=api_key)
+# # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
+# api_key: str = os.getenv('YT_API_KEY')
+#
+# # создать специальный объект для работы с API
+# youtube = build('youtube', 'v3', developerKey=api_key)
 
 
 class Channel:
     """Класс для ютуб-канала"""
+
+    # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
+    api_key: str = os.getenv('YT_API_KEY')
+
+    # создать специальный объект для работы с API
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала.
          Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
 
+    def __str__(self):
+        return f"{self.title} ({self.url})"
+
+    def __add__(self, other):
+        return int(self.sub_count) + int(other.sub_count)
+
+    def __sub__(self, other):
+        return int(self.sub_count) - int(other.sub_count)
+
+    def __lt__(self, other):
+        return int(self.sub_count) < int(other.sub_count)
+
+    def __le__(self, other):
+        return int(self.sub_count) <= int(other.sub_count)
+
+    def __gt__(self, other):
+        return int(self.sub_count) > int(other.sub_count)
+
+    def __ge__(self, other):
+        return int(self.sub_count) >= int(other.sub_count)
+
+    def __eq__(self, other):
+        return int(self.sub_count) == int(other.sub_count)
+
     @property
     def channel(self):
-
-        return youtube.channels()
+        return self.youtube.channels()
 
     @property
     def title(self):
@@ -51,6 +80,7 @@ class Channel:
 
     @property
     def description(self):
+        """Возвращает описание канала канала"""
         channel = self.channel.list(
             id=self.__channel_id, part='snippet').execute()
         return channel['items'][0]['snippet']['description']
@@ -70,7 +100,7 @@ class Channel:
 
     @classmethod
     def get_service(cls):
-        return youtube
+        return cls.youtube
 
     def to_json(self, save_file_json):
         data = {
