@@ -49,9 +49,7 @@ class Channel:
     @property
     def title(self):
         """Возвращает название канала"""
-        channel = self.channel.list(
-            id=self.__channel_id, part='snippet').execute()
-        return channel['items'][0]['snippet']['title']
+        return self.print_info()['items'][0]['snippet']['title']
 
     @property
     def url(self):
@@ -61,32 +59,24 @@ class Channel:
     @property
     def video_count(self):
         """Возвращает колличество видео на канале"""
-        channel = self.channel.list(
-            id=self.__channel_id, part='statistics').execute()
-        return channel['items'][0]['statistics']['videoCount']
+        return self.print_info()['items'][0]['statistics']['videoCount']
 
     @property
     def view_count(self):
         """Возвращает общее колличество просмотров канала"""
-        channel = self.channel.list(
-            id=self.__channel_id, part='statistics').execute()
-        return channel['items'][0]['statistics']['viewCount']
+        return self.print_info()['items'][0]['statistics']['viewCount']
 
     @property
     def description(self):
-        """Возвращает описание канала канала"""
-        channel = self.channel.list(
-            id=self.__channel_id, part='snippet').execute()
-        return channel['items'][0]['snippet']['description']
+        """Возвращает описание канала"""
+        return self.print_info()['items'][0]['snippet']['description']
 
     @property
     def sub_count(self):
         """Возвращает колличество подписчиков канала"""
-        channel = self.channel.list(
-            id=self.__channel_id, part='statistics').execute()
-        return channel['items'][0]['statistics']['subscriberCount']
+        return self.print_info()['items'][0]['statistics']['subscriberCount']
 
-    def print_info(self) -> None:
+    def print_info(self) -> dict:
         """Выводит в консоль информацию о канале"""
         channel = self.channel.list(
             id=self.__channel_id, part='snippet,statistics').execute()
